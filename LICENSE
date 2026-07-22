@@ -1,0 +1,22 @@
+InfoPeek — Proprietary License
+Copyright (c) 2026 posuihushui. All rights reserved.
+
+This repository contains packaged release artifacts (compiled browser-extension
+builds) and documentation for the InfoPeek browser extension. The source code is
+not included and is maintained privately.
+
+No permission is granted to copy, modify, redistribute, publish, sublicense,
+sell, decompile, disassemble, reverse-engineer, or create derivative works from
+any part of this repository or the packaged extension, except:
+
+  (a) as expressly permitted by the terms of the official browser-extension
+      stores through which the extension is distributed (Chrome Web Store,
+      Microsoft Edge Add-ons, Firefox Add-ons); or
+  (b) to the extent such restrictions cannot be lawfully excluded under
+      applicable law (including any non-waivable rights you may have).
+
+The extension is provided "AS IS", without warranty of any kind, express or
+implied. In no event shall the copyright holder be liable for any claim,
+damages, or other liability arising from the use of the extension.
+
+Inquiries: https://github.com/posuihushui/InfoPeek/issues
