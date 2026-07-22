@@ -1,0 +1,96 @@
+# 商店发布流水线（占位）—— 运行在【公开 InfoPeek 仓库】
+#
+# 现状：占位。所有发布 job 都以 `if: secrets.XXX != ''` 守卫，
+#       未配置凭证时自动跳过（绿灯但不做事）。你补齐商店账号后填入 Secrets 即启用。
+#
+# 触发：在 InfoPeek 仓库发布一个 Release（由源码仓库的 release.yml 自动创建）后自动跑，
+#       或手动 workflow_dispatch。
+#
+# 分工（重要）：
+#   - Chrome / Edge：只需上传【构建产物 zip】，可在本公开仓库发布 → 见下方两个 job。
+#   - Firefox / AMO：AMO 要求提交【源码】，而源码是私有的，绝不能放到本公开仓库。
+#     因此 AMO 发布由【私有源码仓库】里的 job 完成（它才有源码 + sources.zip）。
+#     本文件不处理 Firefox。
+#
+# 需要的 Secrets（在 InfoPeek 仓库 Settings 配置）：
+#   Chrome Web Store:  CWS_EXTENSION_ID, CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN
+#   Edge Add-ons:      EDGE_PRODUCT_ID, EDGE_CLIENT_ID, EDGE_API_KEY
+
+name: Publish to stores
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '要发布的 Release tag（如 v1.0.0）'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  chrome:
+    name: Chrome Web Store
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检查凭证
+        id: gate
+        run: |
+          if [ -z "${{ secrets.CWS_CLIENT_ID }}" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::未配置 CWS_* Secrets，跳过 Chrome 发布（占位）。"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 下载 Release 中的 chrome.zip
+        if: steps.gate.outputs.enabled == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: gh release download "$TAG" --repo "${{ github.repository }}" --pattern '*-chrome.zip' --dir .
+
+      - name: 上传到 Chrome Web Store
+        if: steps.gate.outputs.enabled == 'true'
+        uses: mnao305/chrome-extension-upload@v5
+        with:
+          file-path: ./*-chrome.zip
+          extension-id: ${{ secrets.CWS_EXTENSION_ID }}
+          client-id: ${{ secrets.CWS_CLIENT_ID }}
+          client-secret: ${{ secrets.CWS_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CWS_REFRESH_TOKEN }}
+          publish: true
+
+  edge:
+    name: Edge Add-ons
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检查凭证
+        id: gate
+        run: |
+          if [ -z "${{ secrets.EDGE_CLIENT_ID }}" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::未配置 EDGE_* Secrets，跳过 Edge 发布（占位）。"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 下载 Release 中的 edge.zip（无则用 chrome.zip）
+        if: steps.gate.outputs.enabled == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          gh release download "$TAG" --repo "${{ github.repository }}" --pattern '*-edge.zip' --dir . \
+            || gh release download "$TAG" --repo "${{ github.repository }}" --pattern '*-chrome.zip' --dir .
+
+      - name: 上传到 Edge Add-ons
+        if: steps.gate.outputs.enabled == 'true'
+        uses: wdzeng/edge-addon@v2
+        with:
+          product-id: ${{ secrets.EDGE_PRODUCT_ID }}
+          zip-path: ./*-edge.zip
+          client-id: ${{ secrets.EDGE_CLIENT_ID }}
+          api-key: ${{ secrets.EDGE_API_KEY }}
