@@ -2,7 +2,7 @@
 
 All notable changes to InfoPeek. Dates are release dates.
 
-## v1.10.0 — 2026-08-06
+## v1.1.0 — 2026-08-06
 
 ### Added
 
