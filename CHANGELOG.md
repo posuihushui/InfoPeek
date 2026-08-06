@@ -2,6 +2,18 @@
 
 All notable changes to InfoPeek. Dates are release dates.
 
+## v1.1.1 — 2026-08-06
+
+### Fixed
+
+- Popup: cookie names were cut off mid-character instead of being ellipsised. The name
+  cell is a flex container, where `text-overflow: ellipsis` has no effect — the text now
+  sits in its own layer, and hovering a name shows it in full.
+- Popup: the back button took a row of its own above the site header, wasting vertical
+  space in a 580px-tall surface. It now sits inside the header of the cookie list.
+- Popup: the cookie list carried its own `max-height` on top of the popup's, so a long
+  list could overflow past the popup's own bounds. Height is now owned by one place.
+
 ## v1.1.0 — 2026-08-06
 
 ### Added
