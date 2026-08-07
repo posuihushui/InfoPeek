@@ -27,8 +27,8 @@ _Store links will appear here once published._
 
 Until then, grab a build from [**Releases**](https://github.com/posuihushui/InfoPeek/releases) and load it unpacked:
 
-- **Chrome / Edge**: unzip `infopeek-1.1.1-chrome.zip`, open `chrome://extensions`, enable Developer mode, "Load unpacked".
-- **Firefox**: open `about:debugging` → This Firefox → Load Temporary Add-on → pick the `manifest.json` inside `infopeek-1.1.1-firefox.zip`.
+- **Chrome / Edge**: unzip `infopeek-1.1.2-chrome.zip`, open `chrome://extensions`, enable Developer mode, "Load unpacked".
+- **Firefox**: open `about:debugging` → This Firefox → Load Temporary Add-on → pick the `manifest.json` inside `infopeek-1.1.2-firefox.zip`.
 
 ## Features
 

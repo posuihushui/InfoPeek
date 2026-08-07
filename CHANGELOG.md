@@ -2,6 +2,33 @@
 
 All notable changes to InfoPeek. Dates are release dates.
 
+## v1.1.2 — 2026-08-07
+
+### Fixed
+
+- Remote media in the JSON views could not be displayed at all for many URLs.
+  - Media elements were always loaded with `crossorigin="anonymous"`, which turns the
+    load into a CORS request. Servers that do not send `Access-Control-Allow-Origin` —
+    most image CDNs — simply failed. Media is now requested anonymously first and
+    retried as an ordinary load if that is rejected. The retry may include your cookies
+    for that server; the warning shown when enabling remote media now says so.
+  - Choosing **Image / Video / Audio** from a field's display-type menu did nothing
+    unless remote media had already been enabled in Settings. An explicit per-field
+    choice now renders directly, after the same one-time confirmation. Automatically
+    detected media is still governed by the Settings toggle and remains off by default.
+
+### Added
+
+- Remote media can be enabled where you need it, without a trip to Settings: from a
+  **Show media** button next to a media URL, or by picking a media display type for a
+  field. Both show the same warning as the Settings toggle.
+
+### Changed
+
+- The privacy policy now describes the `declarativeNetRequestWithHostAccess` rule
+  accurately: it matches only the extension's own replay request, never anything a web
+  page sends.
+
 ## v1.1.1 — 2026-08-06
 
 ### Fixed

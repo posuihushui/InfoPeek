@@ -1,6 +1,6 @@
 # Privacy Policy — InfoPeek
 
-_Last updated: 2026-07-22_
+_Last updated: 2026-08-07_
 
 InfoPeek is a browser extension that helps developers manage cookies and view/edit JSON. **Your data never leaves your browser.**
 
@@ -15,7 +15,7 @@ InfoPeek is a browser extension that helps developers manage cookies and view/ed
 InfoPeek makes **no network requests on its own**. It never fetches, prefetches, or "phones home" to any endpoint, and it has no servers of its own. There are exactly **two cases** where a request happens, both driven entirely by you:
 
 - **Request Replay** (the Replay tab). When you paste a cURL command and click **Send**, InfoPeek sends that one request to the address you supplied, using your browser's existing cookies for that site. Nothing is sent anywhere else, and nothing is sent to the developer. Requests happen only on an explicit click — there is no auto-send, no retry, no polling, and no replay when the page loads. The request list is kept in browser session memory only and is erased when you close your browser; it is never written to disk or synced to your account.
-- **Remote media rendering** in the JSON list view. This is **disabled by default**. Only if you explicitly enable it in Settings will the list view load image/video/audio resources from URLs contained in the JSON you are viewing — a request that goes directly from your browser to those media servers. Enabling it shows a warning first. When disabled (the default), no such requests are ever made.
+- **Remote media rendering** in the JSON list view. This is **disabled by default**. Only if you explicitly enable it in Settings (or via the inline **Show media** button, which shows the same warning) will the list view load image/video/audio resources from URLs contained in the JSON you are viewing — a request that goes directly from your browser to those media servers. Media is first requested without credentials; if that server rejects the anonymous request, it is retried as an ordinary load, which may include your cookies for that server. Enabling it shows a warning covering this first. When disabled (the default), no such requests are ever made.
 
 ## Permissions and why they are requested
 
@@ -26,7 +26,7 @@ InfoPeek makes **no network requests on its own**. It never fetches, prefetches,
 | `storage` | Save your settings locally (synced by your browser account). |
 | `downloads` | Export cookies/JSON to files you choose to save. |
 | `scripting` | On sites you have authorized, replace a raw JSON response page with the local JSON viewer. |
-| `declarativeNetRequestWithHostAccess` | Apply the request headers you typed (such as `Cookie` or `User-Agent`) to a single request you send from the Replay tab. The rule exists only for the duration of that one request, applies only to that one browser tab, and works only on sites you have authorized. No rules are ever created in the background. |
+| `declarativeNetRequestWithHostAccess` | Apply the request headers you typed (such as `Cookie` or `User-Agent`) to a single request you send from the Replay tab. The rule exists only for the duration of that one request, matches only the extension's own request (never anything a web page sends), and works only on sites you have authorized. No rules are ever created in the background. |
 | Host access (`<all_urls>`, optional) | Requested **at runtime, per site, only when you ask** — never granted at install time. You can revoke it any time in Settings. |
 
 InfoPeek requests **no host permissions at install time**. Site access is always granted on demand and can be revoked at any time.
@@ -43,7 +43,7 @@ Questions about this policy: open an issue at <https://github.com/posuihushui/In
 
 # 隐私政策 — InfoPeek
 
-_最后更新：2026-07-22_
+_最后更新：2026-08-07_
 
 InfoPeek 是一款帮助开发者管理 Cookie、查看/编辑 JSON 的浏览器扩展。**你的数据永不离开浏览器。**
 
@@ -58,7 +58,7 @@ InfoPeek 是一款帮助开发者管理 Cookie、查看/编辑 JSON 的浏览器
 InfoPeek **自身不发起任何网络请求**，不抓取、不预取、不"回传"，也没有任何自有服务器。仅有**两种由你主动触发**的情况会产生请求：
 
 - **请求重放**（重放 Tab）。当你粘贴一条 cURL 命令并点击**发送**时，InfoPeek 会用你浏览器中该站点的现有 Cookie，向你自己填入的地址发出这一次请求。不会发往其他任何地方，也不会发给开发者。请求只在你显式点击时发生——没有自动发送、没有失败重试、没有轮询、页面加载时也不会自动重放。请求列表只保存在浏览器会话内存中，关闭浏览器即清空，绝不写入磁盘、也不同步到你的账号。
-- JSON 列表视图的**远程媒体渲染**。此功能**默认关闭**。只有当你在设置中显式开启后，列表视图才会加载 JSON 中 URL 指向的图片/视频/音频资源——该请求由你的浏览器直接发往这些媒体服务器。开启前会先弹出警告。关闭时（默认）永不发起此类请求。
+- JSON 列表视图的**远程媒体渲染**。此功能**默认关闭**。只有当你在设置中显式开启后（或通过列表里的 **显示媒体** 按钮开启，弹出同一句警告），列表视图才会加载 JSON 中 URL 指向的图片/视频/音频资源——该请求由你的浏览器直接发往这些媒体服务器。媒体先以不带凭证的方式请求；若该服务器拒绝匿名请求，会退回普通方式重试一次，那次可能带上你在该服务器的 Cookie。开启前的警告已写明这一点。关闭时（默认）永不发起此类请求。
 
 ## 权限及申请理由
 
@@ -69,7 +69,7 @@ InfoPeek **自身不发起任何网络请求**，不抓取、不预取、不"回
 | `storage` | 本地保存你的设置（由浏览器账号同步）。 |
 | `downloads` | 将 Cookie/JSON 导出为你选择保存的文件。 |
 | `scripting` | 在你已授权的站点上，把原始 JSON 响应页替换为本地 JSON 查看器。 |
-| `declarativeNetRequestWithHostAccess` | 把你自己填写的请求头（如 `Cookie`、`User-Agent`）应用到你从重放 Tab 发出的那一次请求上。规则只在该次请求期间存在、只作用于该标签页、且只在你已授权的站点上生效。后台绝不创建任何规则。 |
+| `declarativeNetRequestWithHostAccess` | 把你自己填写的请求头（如 `Cookie`、`User-Agent`）应用到你从重放 Tab 发出的那一次请求上。规则只在该次请求期间存在、只匹配扩展自己发出的那个请求（绝不影响网页发出的任何请求）、且只在你已授权的站点上生效。后台绝不创建任何规则。 |
 | 主机访问（`<all_urls>`，可选） | **运行时按站点、仅在你请求时**申请，安装时绝不授予；可随时在设置中撤销。 |
 
 InfoPeek 安装时**不申请任何主机权限**，站点访问始终按需授予、可随时撤销。
